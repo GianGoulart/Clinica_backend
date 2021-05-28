@@ -3,10 +3,10 @@ package health
 import (
 	"net/http"
 
+	"github.com/GianGoulart/Clinica_backend/api/middleware"
+	"github.com/GianGoulart/Clinica_backend/app"
+	"github.com/GianGoulart/Clinica_backend/model"
 	"github.com/labstack/echo/v4"
-	"github.com/tradersclub/PocArquitetura/api/middleware"
-	"github.com/tradersclub/PocArquitetura/app"
-	"github.com/tradersclub/PocArquitetura/model"
 )
 
 // Register group health check

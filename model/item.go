@@ -2,10 +2,8 @@ package model
 
 import (
 	"encoding/json"
+	"errors"
 	"io"
-	"net/http"
-
-	"github.com/tradersclub/TCUtils/tcerr"
 )
 
 // Item de exemplo
@@ -26,7 +24,7 @@ type Item struct {
 func ToItem(data interface{}) (*Item, error) {
 	value, ok := data.(*Item)
 	if !ok {
-		return nil, tcerr.New(http.StatusInternalServerError, "não foi possível converter interface{} para *Item", nil)
+		return nil, errors.New("não foi possível converter interface{} para *Item")
 	}
 	return value, nil
 }

@@ -1,6 +1,6 @@
 package middleware
 
-import "github.com/tradersclub/PocArquitetura/app"
+import "github.com/GianGoulart/Clinica_backend/app"
 
 // Options struct de opções para a criação de uma instancia dos middlewares
 type Options struct {

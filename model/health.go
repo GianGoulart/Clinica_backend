@@ -1,10 +1,6 @@
 package model
 
-import (
-	"net/http"
-
-	"github.com/tradersclub/TCUtils/tcerr"
-)
+import "errors"
 
 // EventGetHealth evento de health check via nats
 const EventGetHealth = "EVENT_GET_HEALTH"
@@ -20,7 +16,7 @@ type Health struct {
 func ToHealth(data interface{}) (*Health, error) {
 	value, ok := data.(*Health)
 	if !ok {
-		return nil, tcerr.New(http.StatusInternalServerError, "não foi possível converter interface{} para *Health", nil)
+		return nil, errors.New("não foi possível converter interface{} para *Health")
 	}
 	return value, nil
 }

@@ -1,11 +1,11 @@
 package v1
 
 import (
+	"github.com/GianGoulart/Clinica_backend/api/middleware"
+	"github.com/GianGoulart/Clinica_backend/api/v1/health"
+	"github.com/GianGoulart/Clinica_backend/api/v1/item"
+	"github.com/GianGoulart/Clinica_backend/app"
 	"github.com/labstack/echo/v4"
-	"github.com/tradersclub/PocArquitetura/api/middleware"
-	"github.com/tradersclub/PocArquitetura/api/v1/health"
-	"github.com/tradersclub/PocArquitetura/api/v1/item"
-	"github.com/tradersclub/PocArquitetura/app"
 )
 
 // Register regristra as rotas v1

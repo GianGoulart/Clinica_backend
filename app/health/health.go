@@ -4,10 +4,10 @@ import (
 	"context"
 	"time"
 
-	"github.com/tradersclub/TCUtils/logger"
+	"github.com/sirupsen/logrus"
 
-	"github.com/tradersclub/PocArquitetura/model"
-	"github.com/tradersclub/PocArquitetura/store"
+	"github.com/GianGoulart/Clinica_backend/model"
+	"github.com/GianGoulart/Clinica_backend/store"
 )
 
 // App interface de health para implementação
@@ -32,16 +32,16 @@ type appImpl struct {
 }
 
 func (s *appImpl) Ping(ctx context.Context) (*model.Health, error) {
-	result := <-s.stores.Health.Ping(ctx)
-	if result.Error != nil {
-		logger.ErrorContext(ctx, "app.health.ping", result.Error.Error())
+	result, err := s.stores.Health.Ping(ctx)
+	if err != nil {
+		logrus.Error(ctx, "app.health.ping", err.Error())
 
-		return nil, result.Error
+		return nil, err
 	}
 
-	data, err := model.ToHealth(result.Data)
+	data, err := model.ToHealth(result)
 	if err != nil {
-		logger.ErrorContext(ctx, "app.health.ping", err.Error())
+		logrus.Error(ctx, "app.health.ping", err.Error())
 
 		return nil, err
 	}
@@ -52,16 +52,16 @@ func (s *appImpl) Ping(ctx context.Context) (*model.Health, error) {
 }
 
 func (s *appImpl) Check(ctx context.Context) (*model.Health, error) {
-	result := <-s.stores.Health.Check(ctx)
-	if result.Error != nil {
-		logger.ErrorContext(ctx, "app.health.check", result.Error.Error())
+	result, err := s.stores.Health.Check(ctx)
+	if err != nil {
+		logrus.Error(ctx, "app.health.check", err.Error())
 
-		return nil, result.Error
+		return nil, err
 	}
 
-	data, err := model.ToHealth(result.Data)
+	data, err := model.ToHealth(result)
 	if err != nil {
-		logger.ErrorContext(ctx, "app.health.check", err.Error())
+		logrus.Error(ctx, "app.health.check", err.Error())
 
 		return nil, err
 	}

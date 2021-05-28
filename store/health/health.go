@@ -2,21 +2,17 @@ package health
 
 import (
 	"context"
-	"net/http"
 
-	"github.com/tradersclub/TCUtils/do"
+	"github.com/sirupsen/logrus"
 
-	"github.com/tradersclub/TCUtils/logger"
-	"github.com/tradersclub/TCUtils/tcerr"
-
+	"github.com/GianGoulart/Clinica_backend/model"
 	"github.com/jmoiron/sqlx"
-	"github.com/tradersclub/PocArquitetura/model"
 )
 
 // Store interface para implementação do health
 type Store interface {
-	Ping(ctx context.Context) do.ChanResult
-	Check(ctx context.Context) do.ChanResult
+	Ping(ctx context.Context) (*model.Health, error)
+	Check(ctx context.Context) (*model.Health, error)
 }
 
 // NewStore cria uma nova instancia do repositorio de health
@@ -29,31 +25,25 @@ type storeImpl struct {
 }
 
 // Ping checa se o banco está online
-func (r *storeImpl) Ping(ctx context.Context) do.ChanResult {
-	return do.Do(func(res *do.Result) {
-		err := r.reader.PingContext(ctx)
-		if err != nil {
-			logger.ErrorContext(ctx, "store.health.ping", err.Error())
-			res.Error = tcerr.New(http.StatusInternalServerError, err.Error(), nil)
-			return
-		}
+func (r *storeImpl) Ping(ctx context.Context) (*model.Health, error) {
+	err := r.reader.PingContext(ctx)
+	if err != nil {
+		logrus.Error(ctx, "store.health.ping", err.Error())
+		return nil, err
+	}
 
-		res.Data = &model.Health{DatabaseStatus: "OK"}
-	})
+	return &model.Health{DatabaseStatus: "OK"}, nil
 }
 
 // Check checa se o banco está com status OK
-func (r *storeImpl) Check(ctx context.Context) do.ChanResult {
-	return do.Do(func(res *do.Result) {
-		data := new(model.Health)
+func (r *storeImpl) Check(ctx context.Context) (*model.Health, error) {
+	data := new(model.Health)
 
-		err := r.reader.GetContext(ctx, data, `SELECT 'DB OK' AS database_status`)
-		if err != nil {
-			logger.ErrorContext(ctx, "store.health.check", err.Error())
-			res.Error = tcerr.New(http.StatusInternalServerError, err.Error(), nil)
-			return
-		}
+	err := r.reader.GetContext(ctx, data, `SELECT 'DB OK' AS database_status`)
+	if err != nil {
+		logrus.Error(ctx, "store.health.check", err.Error())
+		return nil, err
+	}
 
-		res.Data = data
-	})
+	return data, err
 }

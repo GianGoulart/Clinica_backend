@@ -4,8 +4,9 @@ import (
 	"context"
 	"regexp"
 	"strings"
+	"time"
 
-	"github.com/tradersclub/TCUtils/logger"
+	"github.com/sirupsen/logrus"
 )
 
 // Session modelo padrão de sessão
@@ -22,13 +23,31 @@ type Session struct {
 	Props          map[string]string `json:"props"`
 }
 
+// Cache é a interface do pacote de cache
+type Cache interface {
+	Get(ctx context.Context, key string, v interface{}) error
+	Set(ctx context.Context, key string, v interface{}) error
+
+	Del(ctx context.Context, key string) error
+
+	WithExpiration(d time.Duration) Cache
+}
+
+// Options struct de opções para a criação de uma instancia do cache
+type Options struct {
+	Expiration time.Duration
+	URL        string
+	Password   string
+	Timeout    time.Duration
+}
+
 // Is verifica se possui alguma das roles
 func (s *Session) Is(roles ...string) bool {
 	pattern := "(" + strings.Join(roles, "|") + ")"
 
 	ok, err := regexp.MatchString(pattern, s.Roles)
 	if err != nil {
-		logger.Error("model.session.is", s, roles)
+		logrus.Error("model.session.is", s, roles)
 
 		return false
 	}

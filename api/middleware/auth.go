@@ -1,11 +1,9 @@
 package middleware
 
 import (
-	"net/http"
+	"errors"
 
-	authmodel "github.com/tradersclub/TCAuth/model"
-	"github.com/tradersclub/TCUtils/tcerr"
-
+	"github.com/GianGoulart/Clinica_backend/model"
 	"github.com/labstack/echo/v4"
 )
 
@@ -40,9 +38,9 @@ func (m *middlewareAuthImpl) Private(next echo.HandlerFunc) echo.HandlerFunc {
 
 func (m *middlewareAuthImpl) validateSession(c echo.Context, logged bool, roles ...string) error {
 	if logged {
-		authsession, ok := c.Get("session").(*authmodel.Session)
+		authsession, ok := c.Get("session").(*model.Session)
 		if !ok || authsession == nil {
-			return tcerr.New(http.StatusForbidden, "você precisa de autenticação para realizar esta operação", nil)
+			return errors.New("você precisa de autenticação para realizar esta operação")
 		}
 	}
 

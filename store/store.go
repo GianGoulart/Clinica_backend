@@ -1,10 +1,10 @@
 package store
 
 import (
+	"github.com/GianGoulart/Clinica_backend/store/health"
+	"github.com/GianGoulart/Clinica_backend/store/item"
 	"github.com/jmoiron/sqlx"
-	"github.com/tradersclub/PocArquitetura/store/health"
-	"github.com/tradersclub/PocArquitetura/store/item"
-	"github.com/tradersclub/TCUtils/logger"
+	"github.com/sirupsen/logrus"
 )
 
 // Container modelo para exportação dos repositórios instanciados
@@ -26,7 +26,7 @@ func New(opts Options) *Container {
 		Item:   item.NewStore(opts.Reader, opts.Writer),
 	}
 
-	logger.Info("Registered -> Store")
+	logrus.Info("Registered -> Store")
 
 	return container
 }

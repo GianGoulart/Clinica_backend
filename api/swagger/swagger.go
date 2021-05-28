@@ -4,10 +4,10 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/sirupsen/logrus"
 	echoSwagger "github.com/swaggo/echo-swagger"
 
-	docs "github.com/tradersclub/PocArquitetura/docs"
-	"github.com/tradersclub/TCUtils/logger"
+	docs "github.com/GianGoulart/Clinica_backend/docs"
 )
 
 // Options struct de opções para a criação de uma instancia do swagger
@@ -48,5 +48,5 @@ func Register(opts Options) {
 		return echoSwagger.WrapHandler(c)
 	})
 
-	logger.Info("Swagger is initializing...")
+	logrus.Info("Swagger is initializing...")
 }

@@ -8,17 +8,10 @@
   },
   "database": {
     "writer": {
-      "url": "mmuser:TradersPetr4@tcp(10.249.240.3:3306)/tradersclub?charset=utf8mb4,utf8\\u0026readTimeout=30s\\u0026writeTimeout=30s"
+      "url": "root:root@tcp(127.0.0.1:3306)/BD_ClinicaAbrao?charset=utf8mb4,utf8\\u0026readTimeout=30s\\u0026writeTimeout=30s"
     },
     "reader": {
-      "url": "mmuser:TradersPetr4@tcp(10.249.240.3:3306)/tradersclub?charset=utf8mb4,utf8\\u0026readTimeout=30s\\u0026writeTimeout=30s"
+      "url": "root:root@tcp(127.0.0.1:3306)/BD_ClinicaAbrao?charset=utf8mb4,utf8\\u0026readTimeout=30s\\u0026writeTimeout=30s"
     }
-  },
-  "cache": {
-    "url": "localhost:11211",
-    "expiration": 0
-  },
-  "nats": {
-    "url": "nats://127.0.0.1:4222"
   }
 }

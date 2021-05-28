@@ -1,12 +1,11 @@
 package middleware
 
 import (
-	"net/http"
+	"errors"
 	"strings"
 
-	"github.com/tradersclub/PocArquitetura/app"
-	"github.com/tradersclub/PocArquitetura/model"
-	"github.com/tradersclub/TCUtils/tcerr"
+	"github.com/GianGoulart/Clinica_backend/app"
+	"github.com/GianGoulart/Clinica_backend/model"
 
 	"github.com/labstack/echo/v4"
 )
@@ -34,9 +33,7 @@ func (m *middlewareSessionImpl) InjectSession(next echo.HandlerFunc) echo.Handle
 		if authorization != "" {
 			splitedToken := strings.Split(authorization, " ")
 			if len(splitedToken) != 2 {
-				return tcerr.New(http.StatusUnauthorized, "não foi possível decodificar o token", map[string]string{
-					"authorization": authorization,
-				})
+				return errors.New("não foi possível decodificar o token")
 			}
 
 			session, err := m.apps.Session.ReadByID(c.Request().Context(), splitedToken[1])
