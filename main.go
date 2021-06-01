@@ -6,6 +6,8 @@ import (
 
 	"github.com/GianGoulart/Clinica_backend/api/middleware"
 	"github.com/GianGoulart/Clinica_backend/api/swagger"
+	"github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/mysql"
+	"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
 
 	"github.com/GianGoulart/Clinica_backend/model"
@@ -13,7 +15,6 @@ import (
 	"github.com/GianGoulart/Clinica_backend/api"
 	"github.com/GianGoulart/Clinica_backend/app"
 	"github.com/GianGoulart/Clinica_backend/store"
-	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo/v4"
 	emiddleware "github.com/labstack/echo/v4/middleware"
 
@@ -41,13 +42,17 @@ func main() {
 		e.Use(emiddleware.Recover())
 		e.Use(emiddleware.RequestID())
 
-		dbWriter := sqlx.MustConnect("mysql", c.GetString("database.writer.url"))
-		dbReader := sqlx.MustConnect("mysql", c.GetString("database.reader.url"))
+		cfg := mysql.Cfg(c.GetString("database.bd.bd_connection"), c.GetString("database.bd.bd_user"), c.GetString("database.bd.bd_password"))
+		cfg.DBName = c.GetString("database.bd.bd_name")
+		db, err := mysql.DialCfg(cfg)
+		if err != nil {
+			logrus.Error(err)
+		}
 
 		// criação dos stores com a injeção do banco de escrita e leitura
 		stores := store.New(store.Options{
-			Writer: dbWriter,
-			Reader: dbReader,
+			Writer: sqlx.NewDb(db, "mysql"),
+			Reader: sqlx.NewDb(db, "mysql"),
 		})
 
 		// criação dos serviços
@@ -91,8 +96,8 @@ func main() {
 		go func() {
 			<-quit
 
-			dbReader.Close()
-			dbWriter.Close()
+			db.Close()
+			// dbWriter.Close()
 			e.Close()
 		}()
 

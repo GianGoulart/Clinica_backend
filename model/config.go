@@ -1,12 +1,15 @@
 package model
 
 import (
+	"bytes"
+	"encoding/base32"
 	"strings"
 	"time"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
+	"github.com/xtgo/uuid"
 )
 
 // Config interface de configuração
@@ -155,4 +158,16 @@ func New() Validator {
 	return &validatorImpl{
 		v: validator.New(),
 	}
+}
+
+var encoding = base32.NewEncoding("ybndrfg8ejkmcxotp11uwisza345h769")
+
+func NewId() string {
+	var b bytes.Buffer
+	encoder := base32.NewEncoder(encoding, &b)
+	w := uuid.NewRandom()
+	encoder.Write(w.Bytes())
+	encoder.Close()
+	b.Truncate(26)
+	return b.String()
 }

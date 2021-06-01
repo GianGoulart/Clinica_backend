@@ -7,11 +7,11 @@
     "port": ":5055"
   },
   "database": {
-    "writer": {
-      "url": "root:root@tcp(127.0.0.1:3306)/BD_ClinicaAbrao?charset=utf8mb4,utf8\\u0026readTimeout=30s\\u0026writeTimeout=30s"
-    },
-    "reader": {
-      "url": "root:root@tcp(127.0.0.1:3306)/BD_ClinicaAbrao?charset=utf8mb4,utf8\\u0026readTimeout=30s\\u0026writeTimeout=30s"
+    "bd": {
+      "bd_user": "bd-clinica-abrao",
+      "bd_password": "root",
+      "bd_name":"BD_ClinicaAbrao",
+      "bd_connection":"able-keep-315019:southamerica-east1:bd-clinica-abrao" 
     }
   }
 }

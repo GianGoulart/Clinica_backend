@@ -45,5 +45,5 @@ func (r *storeImpl) Check(ctx context.Context) (*model.Health, error) {
 		return nil, err
 	}
 
-	return data, err
+	return data, nil
 }
