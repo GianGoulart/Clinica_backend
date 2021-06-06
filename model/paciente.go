@@ -25,9 +25,10 @@ func (me *Paciente) Validate() error {
 	if len(me.Nome) == 0 {
 		return errors.New("Necessário informar o nome")
 	}
-	if me.Status == 0 {
-		return errors.New("Necessário informar o status")
+	if len(me.Cpf) == 0 {
+		return errors.New("Necessário informar o cpf")
 	}
+
 	return nil
 }
 

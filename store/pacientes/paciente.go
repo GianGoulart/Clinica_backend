@@ -77,6 +77,9 @@ func (s *storeImpl) GetByAnything(ctx context.Context, paciente *model.Paciente)
 	if len(paciente.Convenio) > 0 {
 		query += `and convenio like '%` + paciente.Convenio + `%' `
 	}
+	if len(paciente.Cpf) > 0 {
+		query += `and cpf like '%` + paciente.Cpf + `%' `
+	}
 	if len(paciente.Plano) > 0 {
 		query += `and plano like '%` + paciente.Plano + `%' `
 	}

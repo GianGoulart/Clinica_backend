@@ -36,6 +36,11 @@ func main() {
 		e.Validator = model.New()
 		e.Debug = c.GetString("tc") != "prod"
 		e.HideBanner = true
+		e.Use(emiddleware.CORSWithConfig(emiddleware.CORSConfig{
+			AllowOrigins: []string{"*"},
+			AllowMethods: []string{"GET,POST,PUT,DELETE,OPTIONS"},
+			AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization, echo.HeaderXRequestedWith},
+		}))
 
 		e.Use(emiddleware.Logger())
 		e.Use(emiddleware.BodyLimit("2M"))
