@@ -5,16 +5,18 @@ import (
 	"github.com/GianGoulart/Clinica_backend/store/item"
 	"github.com/GianGoulart/Clinica_backend/store/medicos"
 	"github.com/GianGoulart/Clinica_backend/store/pacientes"
+	"github.com/GianGoulart/Clinica_backend/store/procedimentos"
 	"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
 )
 
 // Container modelo para exportação dos repositórios instanciados
 type Container struct {
-	Health   health.Store
-	Item     item.Store
-	Paciente pacientes.Store
-	Medico   medicos.Store
+	Health       health.Store
+	Item         item.Store
+	Paciente     pacientes.Store
+	Medico       medicos.Store
+	Procedimento procedimentos.Store
 }
 
 // Options struct de opções para a criação de uma instancia dos repositórios
@@ -26,10 +28,11 @@ type Options struct {
 // New cria uma nova instancia dos repositórios
 func New(opts Options) *Container {
 	container := &Container{
-		Health:   health.NewStore(opts.Reader),
-		Item:     item.NewStore(opts.Reader, opts.Writer),
-		Paciente: pacientes.NewStore(opts.Writer),
-		Medico:   medicos.NewStore(opts.Writer),
+		Health:       health.NewStore(opts.Reader),
+		Item:         item.NewStore(opts.Reader, opts.Writer),
+		Paciente:     pacientes.NewStore(opts.Writer),
+		Medico:       medicos.NewStore(opts.Writer),
+		Procedimento: procedimentos.NewStore(opts.Writer),
 	}
 
 	logrus.Info("Registered -> Store")
