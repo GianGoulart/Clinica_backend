@@ -6,7 +6,6 @@ import (
 
 	"github.com/GianGoulart/Clinica_backend/api/middleware"
 	"github.com/GianGoulart/Clinica_backend/api/swagger"
-	"github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/mysql"
 	"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
 
@@ -47,17 +46,18 @@ func main() {
 		e.Use(emiddleware.Recover())
 		e.Use(emiddleware.RequestID())
 
-		cfg := mysql.Cfg(c.GetString("database.bd.bd_connection"), c.GetString("database.bd.bd_user"), c.GetString("database.bd.bd_password"))
-		cfg.DBName = c.GetString("database.bd.bd_name")
-		db, err := mysql.DialCfg(cfg)
-		if err != nil {
-			logrus.Error(err)
-		}
+		// cfg := mysql.Cfg(c.GetString("database.bd.bd_connection"), c.GetString("database.bd.bd_user"), c.GetString("database.bd.bd_password"))
+		// cfg.DBName = c.GetString("database.bd.bd_name")
+		// db, err := mysql.DialCfg(cfg)
+		// if err != nil {
+		// 	logrus.Error(err)
+		// }
+		db := sqlx.MustConnect("mysql", c.GetString("database.writer.url"))
 
 		// criação dos stores com a injeção do banco de escrita e leitura
 		stores := store.New(store.Options{
-			Writer: sqlx.NewDb(db, "mysql"),
-			Reader: sqlx.NewDb(db, "mysql"),
+			Writer: db, //sqlx.NewDb(db, "mysql"),
+			Reader: db, //sqlx.NewDb(db, "mysql"),
 		})
 
 		// criação dos serviços

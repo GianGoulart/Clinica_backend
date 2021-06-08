@@ -9,7 +9,9 @@ import (
 type Procedimento struct {
 	Id                 string  `json:"id" bd:"id"`
 	Id_Paciente        string  `json:"id_paciente" bd:"id_paciente"`
+	Nome_Paciente      string  `json:"nome_paciente" bd:"-"`
 	Id_Medico          string  `json:"id_medico" bd:"id_medico"`
+	Nome_Medico        string  `json:"nome_medico" bd:"-"`
 	Desc_Procedimento  string  `json:"desc_procedimento" bd:"desc_procedimento"`
 	Procedimento       int64   `json:"procedimento" bd:"procedimento"`
 	NomeProcedimento   string  `json:"nome_procedimento" bd:"-"`

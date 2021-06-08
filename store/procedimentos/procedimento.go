@@ -31,9 +31,14 @@ type storeImpl struct {
 func (s *storeImpl) GetAll(ctx context.Context) (*[]model.Procedimento, error) {
 	procedimentos := new([]model.Procedimento)
 	query := `
-			Select id, id_paciente, id_medico, desc_procedimento, procedimento, local_procedimento, status, data, valor, esteira
-				From 
-					BD_ClinicaAbrao.procedimentos`
+				SELECT 
+					pr.id, pr.id_paciente, pa.nome nome_paciente, pr.id_medico, m.nome nome_medico, pr.desc_procedimento, pr.procedimento, pr.local_procedimento, pr.status, pr.data, pr.valor, pr.esteira 
+				FROM 
+					BD_ClinicaAbrao.procedimentos pr
+				Inner Join BD_ClinicaAbrao.pacientes pa
+				ON( pr.id_paciente = pa.id)
+				Inner Join BD_ClinicaAbrao.medicos m
+				On(pr.id_medico = m.id)`
 
 	err := s.db.SelectContext(ctx, procedimentos, query)
 	if err != nil && err != sql.ErrNoRows {

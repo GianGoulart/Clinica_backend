@@ -12,6 +12,9 @@
       "bd_password": "root",
       "bd_name":"BD_ClinicaAbrao",
       "bd_connection":"able-keep-315019:southamerica-east1:bd-clinica-abrao" 
+    },    
+    "writer": {
+      "url": "bd-clinica-abrao:root@tcp(35.199.102.57:3306)/BD_ClinicaAbrao?charset=utf8mb4,utf8\u0026readTimeout=30s\u0026writeTimeout=30s"
     }
   }
 }
