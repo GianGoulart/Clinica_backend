@@ -58,9 +58,13 @@ func (s appImpl) GetByAnything(ctx context.Context, procedimento *model.Procedim
 	if err != nil {
 		return nil, err
 	}
+	var procedimentos = []model.Procedimento{}
 	for _, r := range *res {
-		r = *r.PreencheProcedimentos(&r)
+		p := r.PreencheProcedimentos(&r)
+		procedimentos = append(procedimentos, *p)
 	}
+
+	res = &procedimentos
 	return res, nil
 }
 

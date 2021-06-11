@@ -51,12 +51,16 @@ func (s *storeImpl) GetAll(ctx context.Context) (*[]model.Procedimento, error) {
 
 func (s *storeImpl) GetById(ctx context.Context, id string) (*model.Procedimento, error) {
 	procedimento := new(model.Procedimento)
-	query := `
-			Select  id, id_paciente, id_medico, desc_procedimento, procedimento, local_procedimento, status, data, valor, esteira
-				From 
-					BD_ClinicaAbrao.procedimentos 
+	query := `	SELECT
+					pr.id, pr.id_paciente, pa.nome nome_paciente, pr.id_medico, m.nome nome_medico, pr.desc_procedimento, pr.procedimento, pr.local_procedimento, pr.status, pr.data, pr.valor, pr.esteira 
+				FROM 
+					BD_ClinicaAbrao.procedimentos pr
+				Inner Join BD_ClinicaAbrao.pacientes pa
+				ON( pr.id_paciente = pa.id)
+				Inner Join BD_ClinicaAbrao.medicos m
+				On(pr.id_medico = m.id) 
 				Where 
-					id = ? `
+					pr.id = ? `
 
 	err := s.db.GetContext(ctx, procedimento, query, id)
 	if err != nil && err != sql.ErrNoRows {
@@ -70,28 +74,32 @@ func (s *storeImpl) GetById(ctx context.Context, id string) (*model.Procedimento
 func (s *storeImpl) GetByAnything(ctx context.Context, procedimento *model.Procedimento) (*[]model.Procedimento, error) {
 	procedimentos := new([]model.Procedimento)
 	query := `
-			Select  id, id_paciente, id_medico, desc_procedimento, procedimento, local_procedimento, status, data, valor, esteira
-				From 
-					BD_ClinicaAbrao.procedimentos 
-				Where 
-					1 = 1 `
+		SELECT 
+			pr.id, pr.id_paciente, pa.nome nome_paciente, pr.id_medico, m.nome nome_medico, pr.desc_procedimento, pr.procedimento, pr.local_procedimento, pr.status, pr.data, pr.valor, pr.esteira 
+		FROM 
+			BD_ClinicaAbrao.procedimentos pr, BD_ClinicaAbrao.pacientes pa, BD_ClinicaAbrao.medicos m
+		Where 
+			pr.id_paciente = pa.id	
+			and pr.id_medico = m.id `
 
 	if procedimento.Procedimento > 0 {
-		query += `and procedimento = ` + strconv.Itoa(int(procedimento.Procedimento))
+		query += ` and procedimento = ` + strconv.Itoa(int(procedimento.Procedimento))
 	}
 	if procedimento.Data > 0 {
-		query += `and data <=` + strconv.Itoa(int(procedimento.Data))
+		query += ` and pr.data <=` + strconv.Itoa(int(procedimento.Data))
 	}
 	if procedimento.Local_Procedimento > 0 {
-		query += `and local_procedimento =` + strconv.Itoa(int(procedimento.Local_Procedimento))
+		query += ` and pr.local_procedimento =` + strconv.Itoa(int(procedimento.Local_Procedimento))
+	}
+	if procedimento.Status > 0 {
+		query += ` and pr.status =` + strconv.Itoa(int(procedimento.Status))
 	}
 	if len(procedimento.Id_Medico) > 0 {
-		query += `and id_medico = '` + procedimento.Id_Medico + `' `
+		query += ` and pr.id_medico = '` + procedimento.Id_Medico + `' `
 	}
 	if len(procedimento.Id_Paciente) > 0 {
-		query += `and id_paciente = '` + procedimento.Id_Paciente + `' `
+		query += ` and pr.id_paciente = '` + procedimento.Id_Paciente + `' `
 	}
-
 	err := s.db.SelectContext(ctx, procedimentos, query)
 	if err != nil && err != sql.ErrNoRows {
 		log.WithContext(ctx).Error("store.procedimento.get_procedimento_by_anything ", err.Error())

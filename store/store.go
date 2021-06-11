@@ -1,6 +1,8 @@
 package store
 
 import (
+	"github.com/GianGoulart/Clinica_backend/store/comercial"
+	"github.com/GianGoulart/Clinica_backend/store/financeiro"
 	"github.com/GianGoulart/Clinica_backend/store/health"
 	"github.com/GianGoulart/Clinica_backend/store/item"
 	"github.com/GianGoulart/Clinica_backend/store/medicos"
@@ -17,6 +19,8 @@ type Container struct {
 	Paciente     pacientes.Store
 	Medico       medicos.Store
 	Procedimento procedimentos.Store
+	Comercial    comercial.Store
+	Financeiro   financeiro.Store
 }
 
 // Options struct de opções para a criação de uma instancia dos repositórios
@@ -33,6 +37,8 @@ func New(opts Options) *Container {
 		Paciente:     pacientes.NewStore(opts.Writer),
 		Medico:       medicos.NewStore(opts.Writer),
 		Procedimento: procedimentos.NewStore(opts.Writer),
+		Comercial:    comercial.NewStore(opts.Writer),
+		Financeiro:   financeiro.NewStore(opts.Writer),
 	}
 
 	logrus.Info("Registered -> Store")

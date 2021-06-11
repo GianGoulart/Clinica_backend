@@ -39,6 +39,31 @@ CREATE TABLE `BD_ClinicaAbrao`.`procedimentos` (
   `esteira` INT(1) NOT NULL,
   PRIMARY KEY (`id`));
 
+CREATE TABLE `BD_ClinicaAbrao`.`comercial` (
+  `id` VARCHAR(26) NOT NULL,
+  `id_procedimento` VARCHAR(26) NOT NULL,
+  `id_medico_part` VARCHAR(26) NULL,
+  `funcao_medico_part` INT(1) NULL,
+  `qtd_parcelas` INT(2) NULL,
+  `valor_parcelas` DECIMAL(14,2) NULL,
+  `tipo_pagamento` INT(1) NULL,
+  `forma_pagamento` INT(1) NULL,
+  `data_emissao_nf` BIGINT(20) NULL,
+  `data_vencimento` BIGINT(20) NULL,
+  PRIMARY KEY (`id`));
+
+CREATE TABLE `BD_ClinicaAbrao`.`financeiro` (
+  `id` VARCHAR(26) NOT NULL,
+  `ìd_comercial` VARCHAR(26) NOT NULL,
+  `data_pagamento` BIGINT(20) NULL,
+  `data_compensacao` BIGINT(20) NULL,
+  `plano_contas` INT(1) NULL,
+  `conta` INT(2) NULL,
+  `valor_ajuste` DECIMAL(14,2) NULL,
+  `valor_liquido` DECIMAL(14,2) NULL,
+  `obs` TEXT NULL,
+  PRIMARY KEY (`id`));
+
 CREATE TABLE `BD_ClinicaAbrao`.`previas` (
   `id` VARCHAR(26) NOT NULL,
   `id_procedimentos` VARCHAR(26) NOT NULL,
@@ -64,4 +89,5 @@ CREATE TABLE `BD_ClinicaAbrao`.`contas` (
   `cod_conta` VARCHAR(10) NOT NULL,
   `descricao` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`));
+
 

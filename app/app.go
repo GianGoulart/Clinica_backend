@@ -3,6 +3,8 @@ package app
 import (
 	"time"
 
+	"github.com/GianGoulart/Clinica_backend/app/comercial"
+	"github.com/GianGoulart/Clinica_backend/app/financeiro"
 	"github.com/GianGoulart/Clinica_backend/app/health"
 	"github.com/GianGoulart/Clinica_backend/app/item"
 	"github.com/GianGoulart/Clinica_backend/app/medicos"
@@ -21,6 +23,8 @@ type Container struct {
 	Paciente     pacientes.App
 	Medico       medicos.App
 	Procedimento procedimentos.App
+	Comercial    comercial.App
+	Financeiro   financeiro.App
 }
 
 // Options struct de opções para a criação de uma instancia dos serviços
@@ -41,6 +45,8 @@ func New(opts Options) *Container {
 		Paciente:     pacientes.NewApp(opts.Stores),
 		Medico:       medicos.NewApp(opts.Stores),
 		Procedimento: procedimentos.NewApp(opts.Stores),
+		Comercial:    comercial.NewApp(opts.Stores),
+		Financeiro:   financeiro.NewApp(opts.Stores, comercial.NewApp(opts.Stores)),
 	}
 
 	logrus.Info("Registered -> App")
