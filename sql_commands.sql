@@ -64,23 +64,19 @@ CREATE TABLE `BD_ClinicaAbrao`.`financeiro` (
   `obs` TEXT NULL,
   PRIMARY KEY (`id`));
 
-CREATE TABLE `BD_ClinicaAbrao`.`previas` (
+CREATE TABLE `BD_ClinicaAbrao`.`acompanhamentos` (
   `id` VARCHAR(26) NOT NULL,
-  `id_procedimentos` VARCHAR(26) NOT NULL,
-  `protocolo` BIGINT(20) NULL,
-  `solicitacao` BIGINT(20) NULL,
-  `confirmacao` BIGINT(20) NULL,
-  `finalizacao` BIGINT(20) NULL,
-  PRIMARY KEY (`id`));
-
-CREATE TABLE `BD_ClinicaAbrao`.`reembolsos` (
-  `id` VARCHAR(26) NOT NULL,
-  `id_procedimentos` VARCHAR(26) NOT NULL,
-  `envio` BIGINT(20) NULL,
+  `id_procedimento` VARCHAR(26) NOT NULL,
+  `envio_protocolo` BIGINT(20) NULL,
+  `solicitacao_previa` BIGINT(20) NULL,
+  `confirmacao_solicitacao` BIGINT(20) NULL,
+  `finalizacao_previa` BIGINT(20) NULL,
+  `status_previa` INT NOT NULL,
+  `envio_convenio` BIGINT(20) NULL,
   `liberacao` BIGINT(20) NULL,
   `repasse_paciente` BIGINT(20) NULL,
   `repasse_clinica` BIGINT(20) NULL,
-  `status` INT NOT NULL,
+  `status_reembolso` INT NOT NULL,
   `obs` TEXT NULL,
   PRIMARY KEY (`id`));
 

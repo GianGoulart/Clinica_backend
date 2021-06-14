@@ -2,6 +2,7 @@ package v1
 
 import (
 	"github.com/GianGoulart/Clinica_backend/api/middleware"
+	"github.com/GianGoulart/Clinica_backend/api/v1/acompanhamento"
 	"github.com/GianGoulart/Clinica_backend/api/v1/comercial"
 	"github.com/GianGoulart/Clinica_backend/api/v1/financeiro"
 	"github.com/GianGoulart/Clinica_backend/api/v1/health"
@@ -24,5 +25,5 @@ func Register(g *echo.Group, apps *app.Container, middleware *middleware.Middlew
 	procedimentos.Register(v1.Group("/procedimentos"), apps, middleware)
 	financeiro.Register(v1.Group("/financeiro"), apps, middleware)
 	comercial.Register(v1.Group("/comercial"), apps, middleware)
-
+	acompanhamento.Register(v1.Group("/acompanhamentos"), apps, middleware)
 }
