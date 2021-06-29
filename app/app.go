@@ -5,7 +5,7 @@ import (
 
 	"github.com/GianGoulart/Clinica_backend/app/acompanhamento"
 	"github.com/GianGoulart/Clinica_backend/app/comercial"
-	"github.com/GianGoulart/Clinica_backend/app/financeiro"
+	"github.com/GianGoulart/Clinica_backend/app/dashboard"
 	"github.com/GianGoulart/Clinica_backend/app/health"
 	"github.com/GianGoulart/Clinica_backend/app/item"
 	"github.com/GianGoulart/Clinica_backend/app/medicos"
@@ -25,8 +25,8 @@ type Container struct {
 	Medico         medicos.App
 	Procedimento   procedimentos.App
 	Comercial      comercial.App
-	Financeiro     financeiro.App
 	Acompanhamento acompanhamento.App
+	Dashboard      dashboard.App
 }
 
 // Options struct de opções para a criação de uma instancia dos serviços
@@ -48,8 +48,8 @@ func New(opts Options) *Container {
 		Medico:         medicos.NewApp(opts.Stores),
 		Procedimento:   procedimentos.NewApp(opts.Stores),
 		Comercial:      comercial.NewApp(opts.Stores),
-		Financeiro:     financeiro.NewApp(opts.Stores, comercial.NewApp(opts.Stores)),
 		Acompanhamento: acompanhamento.NewApp(opts.Stores),
+		Dashboard:      dashboard.NewApp(opts.Stores),
 	}
 
 	logrus.Info("Registered -> App")

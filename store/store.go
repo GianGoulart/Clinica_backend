@@ -3,7 +3,6 @@ package store
 import (
 	"github.com/GianGoulart/Clinica_backend/store/acompanhamento"
 	"github.com/GianGoulart/Clinica_backend/store/comercial"
-	"github.com/GianGoulart/Clinica_backend/store/financeiro"
 	"github.com/GianGoulart/Clinica_backend/store/health"
 	"github.com/GianGoulart/Clinica_backend/store/item"
 	"github.com/GianGoulart/Clinica_backend/store/medicos"
@@ -21,7 +20,6 @@ type Container struct {
 	Medico         medicos.Store
 	Procedimento   procedimentos.Store
 	Comercial      comercial.Store
-	Financeiro     financeiro.Store
 	Acompanhamento acompanhamento.Store
 }
 
@@ -40,7 +38,6 @@ func New(opts Options) *Container {
 		Medico:         medicos.NewStore(opts.Writer),
 		Procedimento:   procedimentos.NewStore(opts.Writer),
 		Comercial:      comercial.NewStore(opts.Writer),
-		Financeiro:     financeiro.NewStore(opts.Writer),
 		Acompanhamento: acompanhamento.NewStore(opts.Writer),
 	}
 

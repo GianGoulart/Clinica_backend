@@ -1,0 +1,86 @@
+Regras
+
+Financeiro -> 
+    Valor Procedimento + Valor Ajuste = Valor Liquido 
+
+Produção
+    Qtde de Retornos -> Buscar em procedimentos a quantidade de procedimentos de um paciente    
+        
+    Status Previa
+
+        If (STATUS_PROCEDIMENTO == "CANCELADO" || ESTEIRA == "" || ESTEIRA == "100% PARTICULAR") = "-";  
+
+        If (STATUS_PROCEDIMENTO == "REALIZADO" && Envio Protocolo Paciente == "") = "01-Pendente envio de protocolo paciente";
+
+        If (STATUS_PROCEDIMENTO <> "CANCELADO" && Data Solicitação Prévia == "") = "02-Pendente solicitação da prévia";
+
+        If (Confirmação da Solicitação == "" && HOJE() - Data Solicitação Prévia > 2) = "03-Confirmação da prévia atrasada em: "&HOJE()-X82-2&" dias";
+
+        If (Finalização de Prévia == "" && HOJE() - Confirmação da Solicitação > 7) = "04-Finalização da prévia atrasada em: "&HOJE()-X82-7&" dias";
+
+    Status Reembolso
+     
+        If (CODPACIENTE == "" || ESTEIRA == "" || ESTEIRA == "100% PARTICULAR" || STATUS_PROCEDIMENTO <> "REALIZADO") = "-";
+
+        If (Finalização de Prévia == "") = "01-Aguardando finalização de prévia";
+
+        If (Finalização de Prévia <> "" && Data de Envio Convenio = "" && HOJE() - Data Procedimento > 7) = "02-Envio para convênio atrasado em: "&HOJE()-T159-7&" dias";
+
+        If (PROCEDIMENTO == "CIRURGIA" && Data de Envio Convenio <> "" && Data de Liberação == "" && HOJE() - Data de Envio Convenio > 10) = "03-Liberação convênio atrasada em: "&HOJE()-AB159-10&" dias";
+
+        If (PROCEDIMENTO <> "CIRURGIA" && Data de Envio Convenio <> "" && Data de Liberação = ="" && HOJE() - Data de Envio Convenio > 5)  = "03-Liberação convênio atrasada em: "&HOJE()-AB159-5&" dias";
+
+        If (Data de Liberação <> "" && Data de Repasse Paciente == "" && HOJE() - Data de Liberação > 7) = "04-Repasse paciente atrasado em: "&HOJE()-AC159-7&" dias";
+
+        If (Data de Repasse Paciente <> "" && Data de Repasse Clinica == "" && HOJE() - Data de Repasse Paciente > 3) = "05-Repasse clínica atrasado em: "&HOJE()-AD159-3&" dias";
+
+    Status Financeiro
+
+
+        If (STATUS_PROCEDIMENTO == "A AGENDAR" || STATUS_PROCEDIMENTO=="AGENDADO") && Data Procedimento<>"" && Data Procedimento < HOJE() = "Erro: Data de procedimento JÁ PASSOU, porém ainda consta como Agendado ou A Agendar";
+
+        If (STATUS_PROCEDIMENTO == "A AGENDAR" && Data Procedimento - HOJE() <= 10 && Data Procedimento <> "") = "Aviso: Faltam "&T264-HOJE()&" dias para o procedimento e ainda consta como A Agendar";
+
+        If ((STATUS_PROCEDIMENTO == "A AGENDAR" || STATUS_PROCEDIMENTO == "AGENDADO" || STATUS_PROCEDIMENTO == "CANCELADO") && Total Geral == 0) = "OK";
+
+        If ((STATUS_PROCEDIMENTO == "A AGENDAR" || STATUS_PROCEDIMENTO == "AGENDADO" || STATUS_PROCEDIMENTO == "CANCELADO") && Total Geral <> 0)) = "Erro: Produção NÃO REALIZADA, porém constam valores no Financeiro";
+
+        If (ESTEIRA == "") = "Erro: Procedimento Realizado sem Esteira definida";
+
+        If (Total Geral <> Total Geral) = "Erro: Valor total do procedimento não bate com valores lançados no Financeiro";
+
+        If (ESTEIRA == "100% Convenio" && Total Extra + Total Particular <> 0) = "Erro: 100% Convenio COM valores Extra ou Particular no Financeiro";
+
+        If (ESTEIRA == "100% Particular" && Total Extra + Total Reembolso <> 0) = "Erro: 100% Particular COM valores Extra ou Reembolso no Financeiro";
+
+        If (ESTEIRA == "Convenio + Extra" && Total Reembolso == 0) = "Erro: Convenio+Extra SEM valores de Reembolso no Financeiro";
+
+        If (ESTEIRA == "Convenio + Extra" && Total Extra == 0) = "Erro: Convenio+Extra SEM valores de Extra no Financeiro";
+
+        If (ESTEIRA == "Convenio + Extra" && Total Particular <> 0 )= "Erro: Convenio+Extra COM valores de Particular no Financeiro";
+
+        If (Reembolso NFs A Emitir <> 0 || Extra NFs A Emitir <> 0 || Particular NFs A Emitir <> 0 )= "Aviso: Existem NFs pendentes de Emissão";
+
+
+G = CODPACIENTE
+P = PROCEDIMENTO
+S = STATUS_PROCEDIMENTO
+T = Data Procedimento
+U = Total Geral
+V = ESTEIRA
+W = Envio Protocolo Paciente  
+X = Data Solicitação Prévia
+Y = Confirmação da Solicitação
+Z = Finalização de Prévia
+AB = Data de Envio Convenio
+AC = Data de Liberação
+AD = Data de Repasse Paciente
+AE = Data de Repasse Clinica
+AH = Total Reembolso
+AL = Reembolso NFs A Emitir
+AM = Total Extra
+AQ = Extra NFs A Emitir
+AR = Total Particular
+AV = Particular NFs A Emitir
+AW = Total Geral
+AX = Descrição do Status Financeiro

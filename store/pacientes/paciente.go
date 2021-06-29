@@ -31,7 +31,7 @@ type storeImpl struct {
 func (s *storeImpl) GetAll(ctx context.Context) (*[]model.Paciente, error) {
 	pacientes := new([]model.Paciente)
 	query := `
-			Select id, cpf, nome, telefone, convenio, plano, acomodacao, status
+			Select id, cpf, nome, telefone, telefone2, convenio, plano, acomodacao, status
 				From 
 					BD_ClinicaAbrao.pacientes`
 
@@ -47,7 +47,7 @@ func (s *storeImpl) GetAll(ctx context.Context) (*[]model.Paciente, error) {
 func (s *storeImpl) GetById(ctx context.Context, id string) (*model.Paciente, error) {
 	paciente := new(model.Paciente)
 	query := `
-			Select id, cpf, nome, telefone, convenio, plano, acomodacao, status
+			Select id, cpf, nome, telefone, telefone2, convenio, plano, acomodacao, status
 				From 
 					BD_ClinicaAbrao.pacientes 
 				Where 
@@ -65,7 +65,7 @@ func (s *storeImpl) GetById(ctx context.Context, id string) (*model.Paciente, er
 func (s *storeImpl) GetByAnything(ctx context.Context, paciente *model.Paciente) (*[]model.Paciente, error) {
 	pacientes := new([]model.Paciente)
 	query := `
-			Select id, cpf, nome, telefone, convenio, plano, acomodacao, status
+			Select id, cpf, nome, telefone, telefone2, convenio, plano, acomodacao, status
 				From 
 					BD_ClinicaAbrao.pacientes 
 				Where 
@@ -98,8 +98,8 @@ func (s *storeImpl) GetByAnything(ctx context.Context, paciente *model.Paciente)
 
 func (s *storeImpl) Set(ctx context.Context, paciente *model.Paciente) (*model.Paciente, error) {
 
-	_, err := s.db.ExecContext(ctx, `INSERT INTO BD_ClinicaAbrao.pacientes (id, cpf, nome, telefone, convenio, plano, acomodacao, status) VALUES (?,?,?,?,?,?,?,?)`,
-		paciente.Id, paciente.Cpf, paciente.Nome, paciente.Telefone, paciente.Convenio, paciente.Plano, paciente.Acomodacao, paciente.Status)
+	_, err := s.db.ExecContext(ctx, `INSERT INTO BD_ClinicaAbrao.pacientes (id, cpf, nome, telefone, telefone2, convenio, plano, acomodacao, status) VALUES (?,?,?,?,?,?,?,?)`,
+		paciente.Id, paciente.Cpf, paciente.Nome, paciente.Telefone, paciente.Telefone2, paciente.Convenio, paciente.Plano, paciente.Acomodacao, paciente.Status)
 	if err != nil {
 		log.WithContext(ctx).Error("store.paciente.set_paciente", err.Error())
 		return nil, err
@@ -109,8 +109,8 @@ func (s *storeImpl) Set(ctx context.Context, paciente *model.Paciente) (*model.P
 }
 
 func (s *storeImpl) Update(ctx context.Context, paciente *model.Paciente) (*model.Paciente, error) {
-	_, err := s.db.ExecContext(ctx, `Update BD_ClinicaAbrao.pacientes SET cpf=?, nome=?, telefone=?, convenio=?, plano=?, acomodacao=?, status=? Where id=?`,
-		paciente.Cpf, paciente.Nome, paciente.Telefone, paciente.Convenio, paciente.Plano, paciente.Acomodacao, paciente.Status, paciente.Id)
+	_, err := s.db.ExecContext(ctx, `Update BD_ClinicaAbrao.pacientes SET cpf=?, nome=?, telefone=?, telefone2=?, convenio=?, plano=?, acomodacao=?, status=? Where id=?`,
+		paciente.Cpf, paciente.Nome, paciente.Telefone, paciente.Telefone2, paciente.Convenio, paciente.Plano, paciente.Acomodacao, paciente.Status, paciente.Id)
 	if err != nil {
 		log.WithContext(ctx).Error("store.paciente.update", err.Error())
 		return nil, err

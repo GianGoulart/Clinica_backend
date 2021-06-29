@@ -1,0 +1,26 @@
+Pontos a Verificar
+
+- If (STATUS_PROCEDIMENTO == "A AGENDAR" && Data Procedimento - HOJE() <= 10 && Data Procedimento <> "") = "Aviso: Faltam "&T264-HOJE()&" dias para o procedimento e ainda consta como A Agendar";
+
+OK      - Solução para Componente de Moeda 
+
+OK      - Paginação da listagem
+
+OK      - Colocar o comercial e o financeiro juntos, pois as informações são complementares, e estando separadas tenho que ficar indo no comercial verificar as inf. para preencher o financeiro.
+
+OK      - Substituir a opção "misto" para "convênio + extra" 
+
+OK      - Fiz um cadastro de procedimento no dia 23/06 e coloquei com realizado, mas a data é futura, creio que para esses casos deverão ter alertas.
+
+OK      - Não acho viável o fato de lançar um procedimento e após add no comercial financeiro ter que preencher a o valor novamente, pois perco tempo voltando no lançamento de procedimento para confirmar o valor.
+
+OK      - Valor Liquido no Financeiro ser calculado
+
+OK      - Nome Especialidade (remover demais campos)
+
+OK      - Quebrar campo procedimento em colunas (Data Paciente Procedimento Medico Principal)
+
+OK      - telefone adicional
+
+
+

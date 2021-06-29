@@ -58,7 +58,7 @@ var MapStatusProcedimento = map[int64]string{
 var MapStatusEsteira = map[int64]string{
 	1: "Convenio",
 	2: "Particular",
-	3: "Misto",
+	3: "Convẽnio + Extra",
 }
 
 func (me *Procedimento) PreSave() {

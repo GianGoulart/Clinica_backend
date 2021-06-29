@@ -2,8 +2,6 @@ package comercial
 
 import (
 	"context"
-	"fmt"
-	"time"
 
 	"github.com/GianGoulart/Clinica_backend/model"
 	"github.com/GianGoulart/Clinica_backend/store"
@@ -50,7 +48,7 @@ func (s appImpl) GetAll(ctx context.Context) (*[]model.Comercial, error) {
 		}
 		procedimento = procedimento.PreencheProcedimentos(procedimento)
 
-		p.Desc_Procedimento = fmt.Sprintf("%s - %s - %s - %v", procedimento.Nome_Paciente, procedimento.Nome_Medico, procedimento.NomeProcedimento, time.Unix(procedimento.Data, 0).Format("02-01-2006"))
+		p.Procedimento = *procedimento
 		comercials = append(comercials, *p)
 	}
 
@@ -76,7 +74,7 @@ func (s appImpl) GetById(ctx context.Context, id string) (*model.Comercial, erro
 	}
 	procedimento = procedimento.PreencheProcedimentos(procedimento)
 
-	res.Desc_Procedimento = fmt.Sprintf("%s - %s - %s - %v", procedimento.Nome_Paciente, procedimento.Nome_Medico, procedimento.NomeProcedimento, time.Unix(procedimento.Data, 0).Format("02-01-2006"))
+	res.Procedimento = *procedimento
 
 	return res, nil
 }
@@ -102,7 +100,7 @@ func (s appImpl) GetByAnything(ctx context.Context, comercial *model.Comercial) 
 		}
 		procedimento = procedimento.PreencheProcedimentos(procedimento)
 
-		p.Desc_Procedimento = fmt.Sprintf("%s - %s - %s - %v", procedimento.Nome_Paciente, procedimento.Nome_Medico, procedimento.NomeProcedimento, time.Unix(procedimento.Data, 0).Format("02-01-2006"))
+		p.Procedimento = *procedimento
 		comercials = append(comercials, *p)
 	}
 

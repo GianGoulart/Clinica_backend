@@ -4,7 +4,7 @@ import (
 	"github.com/GianGoulart/Clinica_backend/api/middleware"
 	"github.com/GianGoulart/Clinica_backend/api/v1/acompanhamento"
 	"github.com/GianGoulart/Clinica_backend/api/v1/comercial"
-	"github.com/GianGoulart/Clinica_backend/api/v1/financeiro"
+	"github.com/GianGoulart/Clinica_backend/api/v1/dashboard"
 	"github.com/GianGoulart/Clinica_backend/api/v1/health"
 	"github.com/GianGoulart/Clinica_backend/api/v1/item"
 	"github.com/GianGoulart/Clinica_backend/api/v1/medicos"
@@ -23,7 +23,7 @@ func Register(g *echo.Group, apps *app.Container, middleware *middleware.Middlew
 	pacientes.Register(v1.Group("/pacientes"), apps, middleware)
 	medicos.Register(v1.Group("/medicos"), apps, middleware)
 	procedimentos.Register(v1.Group("/procedimentos"), apps, middleware)
-	financeiro.Register(v1.Group("/financeiro"), apps, middleware)
 	comercial.Register(v1.Group("/comercial"), apps, middleware)
 	acompanhamento.Register(v1.Group("/acompanhamentos"), apps, middleware)
+	dashboard.Register(v1.Group("/dashboard"), apps, middleware)
 }

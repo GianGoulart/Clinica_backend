@@ -11,6 +11,7 @@ type Paciente struct {
 	Cpf        string `json:"cpf" bd:"cpf"`
 	Nome       string `json:"nome" bd:"nome"`
 	Telefone   string `json:"telefone" bd:"telefone"`
+	Telefone2  string `json:"telefone2" bd:"telefone2"`
 	Convenio   string `json:"convenio" bd:"convenio"`
 	Plano      string `json:"plano" bd:"plano"`
 	Acomodacao string `json:"acomodacao" bd:"acomodacao"`

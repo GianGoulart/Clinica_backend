@@ -30,7 +30,7 @@ type storeImpl struct {
 func (s *storeImpl) GetAll(ctx context.Context) (*[]model.Medico, error) {
 	medicos := new([]model.Medico)
 	query := `
-			Select id, nome, cpf, banco_pf, agencia_pf, conta_pf, razao_social, banco_pj, agencia_pj, conta_pj, cnpj
+			Select id, nome, especialidade
 				From 
 					BD_ClinicaAbrao.medicos`
 
@@ -46,7 +46,7 @@ func (s *storeImpl) GetAll(ctx context.Context) (*[]model.Medico, error) {
 func (s *storeImpl) GetById(ctx context.Context, id string) (*model.Medico, error) {
 	medico := new(model.Medico)
 	query := `
-			Select id, nome, cpf, banco_pf, agencia_pf, conta_pf, razao_social, banco_pj, agencia_pj, conta_pj, cnpj
+			Select id, nome, especialidade
 				From 
 					BD_ClinicaAbrao.medicos 
 				Where 
@@ -64,7 +64,7 @@ func (s *storeImpl) GetById(ctx context.Context, id string) (*model.Medico, erro
 func (s *storeImpl) GetByAnything(ctx context.Context, medico *model.Medico) (*[]model.Medico, error) {
 	medicos := new([]model.Medico)
 	query := `
-			Select id, nome, cpf, banco_pf, agencia_pf, conta_pf, razao_social, banco_pj, agencia_pj, conta_pj, cnpj
+			Select id, nome, especialidade
 				From 
 					BD_ClinicaAbrao.medicos 
 				Where 
@@ -73,11 +73,8 @@ func (s *storeImpl) GetByAnything(ctx context.Context, medico *model.Medico) (*[
 	if len(medico.Nome) > 0 {
 		query += `and nome like '%` + medico.Nome + `%' `
 	}
-	if len(medico.Razao_social) > 0 {
-		query += `and razao_social like '%` + medico.Razao_social + `%' `
-	}
-	if len(medico.Cnpj) > 0 {
-		query += `and cnpj like '%` + medico.Cnpj + `%' `
+	if len(medico.Especialidade) > 0 {
+		query += `and especialidade like '%` + medico.Especialidade + `%' `
 	}
 
 	err := s.db.SelectContext(ctx, medicos, query)
@@ -91,8 +88,8 @@ func (s *storeImpl) GetByAnything(ctx context.Context, medico *model.Medico) (*[
 
 func (s *storeImpl) Set(ctx context.Context, medico *model.Medico) (*model.Medico, error) {
 
-	_, err := s.db.ExecContext(ctx, `INSERT INTO BD_ClinicaAbrao.medicos (id, nome, cpf, banco_pf, agencia_pf, conta_pf, razao_social, banco_pj, agencia_pj, conta_pj, cnpj) VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
-		medico.Id, medico.Nome, medico.Cpf, medico.Banco_pf, medico.Agencia_pf, medico.Conta_pf, medico.Razao_social, medico.Banco_pj, medico.Agencia_pj, medico.Conta_pj, medico.Cnpj)
+	_, err := s.db.ExecContext(ctx, `INSERT INTO BD_ClinicaAbrao.medicos (id, nome, especialidade) VALUES (?,?,?)`,
+		medico.Id, medico.Nome, medico.Especialidade)
 	if err != nil {
 		log.WithContext(ctx).Error("store.medico.set_paciente", err.Error())
 		return nil, err
@@ -102,8 +99,8 @@ func (s *storeImpl) Set(ctx context.Context, medico *model.Medico) (*model.Medic
 }
 
 func (s *storeImpl) Update(ctx context.Context, medico *model.Medico) (*model.Medico, error) {
-	_, err := s.db.ExecContext(ctx, `Update BD_ClinicaAbrao.medicos SET nome=?, cpf=?, banco_pf=?, agencia_pf=?, conta_pf=?, razao_social=?, banco_pj=?, agencia_pj=?, conta_pj=?, cnpj=? Where id=?`,
-		medico.Nome, medico.Cpf, medico.Banco_pf, medico.Agencia_pf, medico.Conta_pf, medico.Razao_social, medico.Banco_pj, medico.Agencia_pj, medico.Conta_pj, medico.Cnpj, medico.Id)
+	_, err := s.db.ExecContext(ctx, `Update BD_ClinicaAbrao.medicos SET nome=?, especialidade=? Where id=?`,
+		medico.Nome, medico.Especialidade, medico.Id)
 	if err != nil {
 		log.WithContext(ctx).Error("store.medico.update", err.Error())
 		return nil, err

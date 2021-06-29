@@ -108,8 +108,8 @@ func (s *storeImpl) GetByAnything(ctx context.Context, comercial *model.Comercia
 
 func (s *storeImpl) Set(ctx context.Context, comercial *model.Comercial) (*model.Comercial, error) {
 
-	_, err := s.db.ExecContext(ctx, `INSERT INTO BD_ClinicaAbrao.comercial (id, id_procedimento, id_medico_part, funcao_medico_part, qtd_parcelas, valor_parcelas, tipo_pagamento, forma_pagamento, data_emissao_nf, data_vencimento) VALUES (?,?,?,?,?,?,?,?,?,?)`,
-		comercial.Id, comercial.Id_Procedimento, comercial.Id_Medico_Part, comercial.Funcao_Medico_Part, comercial.Qtd_Parcelas, comercial.Valor_Parcelas, comercial.Tipo_Pagamento, comercial.Forma_Pagamento, comercial.Data_Emissao_NF, comercial.Data_Vencimento)
+	_, err := s.db.ExecContext(ctx, `INSERT INTO BD_ClinicaAbrao.comercial (id, id_procedimento, id_medico_part, funcao_medico_part, qtd_parcelas, valor_parcelas, tipo_pagamento, forma_pagamento, data_emissao_nf, data_vencimento, data_pagamento, data_compensacao, plano_contas, conta, valor_ajuste, valor_liquido, obs) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+		comercial.Id, comercial.Id_Procedimento, comercial.Id_Medico_Part, comercial.Funcao_Medico_Part, comercial.Qtd_Parcelas, comercial.Valor_Parcelas, comercial.Tipo_Pagamento, comercial.Forma_Pagamento, comercial.Data_Emissao_NF, comercial.Data_Vencimento, comercial.Data_Pagamento, comercial.Data_Compensacao, comercial.Plano_Contas, comercial.Conta, comercial.Valor_Ajuste, comercial.Valor_Liquido, comercial.Obs)
 	if err != nil {
 		log.WithContext(ctx).Error("store.comercial.set_comercial", err.Error())
 		return nil, err
@@ -119,8 +119,8 @@ func (s *storeImpl) Set(ctx context.Context, comercial *model.Comercial) (*model
 }
 
 func (s *storeImpl) Update(ctx context.Context, comercial *model.Comercial) (*model.Comercial, error) {
-	_, err := s.db.ExecContext(ctx, `Update BD_ClinicaAbrao.comercial SET id_procedimento=? , id_medico_part=? , funcao_medico_part=? , qtd_parcelas=? , valor_parcelas=? , tipo_pagamento=? , forma_pagamento=? , data_emissao_nf=? , data_vencimento=?  Where id = ?`,
-		comercial.Id_Procedimento, comercial.Id_Medico_Part, comercial.Funcao_Medico_Part, comercial.Qtd_Parcelas, comercial.Valor_Parcelas, comercial.Tipo_Pagamento, comercial.Forma_Pagamento, comercial.Data_Emissao_NF, comercial.Data_Vencimento, comercial.Id)
+	_, err := s.db.ExecContext(ctx, `Update BD_ClinicaAbrao.comercial SET id_procedimento=? , id_medico_part=? , funcao_medico_part=? , qtd_parcelas=? , valor_parcelas=? , tipo_pagamento=? , forma_pagamento=? , data_emissao_nf=? , data_vencimento=?, data_pagamento=?, data_compensacao=?, plano_contas=?, conta=?, valor_ajuste=?, valor_liquido=?, obs=? Where id = ?`,
+		comercial.Id_Procedimento, comercial.Id_Medico_Part, comercial.Funcao_Medico_Part, comercial.Qtd_Parcelas, comercial.Valor_Parcelas, comercial.Tipo_Pagamento, comercial.Forma_Pagamento, comercial.Data_Emissao_NF, comercial.Data_Vencimento, comercial.Data_Pagamento, comercial.Data_Compensacao, comercial.Plano_Contas, comercial.Conta, comercial.Valor_Ajuste, comercial.Valor_Liquido, comercial.Obs, comercial.Id)
 	if err != nil {
 		log.WithContext(ctx).Error("store.Comercial.update", err.Error())
 		return nil, err
