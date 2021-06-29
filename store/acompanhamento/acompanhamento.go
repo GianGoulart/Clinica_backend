@@ -36,7 +36,7 @@ func (s *storeImpl) GetAll(ctx context.Context) (*[]model.Acompanhamento, error)
 					a.id, a.id_procedimento, envio_protocolo, solicitacao_previa, confirmacao_solicitacao, finalizacao_previa, status_previa, envio_convenio, liberacao, repasse_paciente, repasse_clinica, status_reembolso, obs 
 				FROM 
 					BD_ClinicaAbrao.acompanhamentos a 
-				Inner Join BD_ClinicaAbrao.procedimentos pr
+				Left Join BD_ClinicaAbrao.procedimentos pr
 				ON( pr.id = a.id_procedimento)`
 
 	err := s.db.SelectContext(ctx, acompanhamento, query)
@@ -74,7 +74,7 @@ func (s *storeImpl) GetByAnything(ctx context.Context, acompanhamento *model.Aco
 			a.id, a.id_procedimento, envio_protocolo, solicitacao_previa, confirmacao_solicitacao, finalizacao_previa, status_previa, envio_convenio, liberacao, repasse_paciente, repasse_clinica, status_reembolso, obs
 				FROM 
 					BD_ClinicaAbrao.acompanhamentos a
-				Inner Join BD_ClinicaAbrao.procedimentos pr
+				Left Join BD_ClinicaAbrao.procedimentos pr
 					ON( pr.id = a.id_procedimento) 
 				Where 1 = 1 `
 

@@ -35,9 +35,9 @@ func (s *storeImpl) GetAll(ctx context.Context) (*[]model.Procedimento, error) {
 					pr.id, pr.id_paciente, pa.nome nome_paciente, pr.id_medico, m.nome nome_medico, pr.desc_procedimento, pr.procedimento, pr.local_procedimento, pr.status, pr.data, pr.valor, pr.esteira 
 				FROM 
 					BD_ClinicaAbrao.procedimentos pr
-				Inner Join BD_ClinicaAbrao.pacientes pa
+				Left Join BD_ClinicaAbrao.pacientes pa
 				ON( pr.id_paciente = pa.id)
-				Inner Join BD_ClinicaAbrao.medicos m
+				Left Join BD_ClinicaAbrao.medicos m
 				On(pr.id_medico = m.id)`
 
 	err := s.db.SelectContext(ctx, procedimentos, query)
@@ -55,9 +55,9 @@ func (s *storeImpl) GetById(ctx context.Context, id string) (*model.Procedimento
 					pr.id, pr.id_paciente, pa.nome nome_paciente, pr.id_medico, m.nome nome_medico, pr.desc_procedimento, pr.procedimento, pr.local_procedimento, pr.status, pr.data, pr.valor, pr.esteira 
 				FROM 
 					BD_ClinicaAbrao.procedimentos pr
-				Inner Join BD_ClinicaAbrao.pacientes pa
+				Left Join BD_ClinicaAbrao.pacientes pa
 				ON( pr.id_paciente = pa.id)
-				Inner Join BD_ClinicaAbrao.medicos m
+				Left Join BD_ClinicaAbrao.medicos m
 				On(pr.id_medico = m.id) 
 				Where 
 					pr.id = ? `
