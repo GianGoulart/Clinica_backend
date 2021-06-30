@@ -32,7 +32,7 @@ func (s *storeImpl) GetAll(ctx context.Context) (*[]model.Comercial, error) {
 	comercial := new([]model.Comercial)
 	query := `
 				SELECT 
-					c.*, pa.nome nome_paciente, m.nome nome_medico 
+					c.*, ifnull(pa.nome ,"") nome_paciente,	ifnull(m.nome ,"")  nome_medico 
 				FROM 
 					BD_ClinicaAbrao.comercial c
 				Left Join BD_ClinicaAbrao.procedimentos pr
@@ -73,8 +73,8 @@ func (s *storeImpl) GetByAnything(ctx context.Context, comercial *model.Comercia
 	listacomercial := new([]model.Comercial)
 	query := `
 			SELECT 
-				c.*, pa.nome nome_paciente, m.nome nome_medico
-				FROM 
+				c.*, ifnull(pa.nome ,"") nome_paciente,	ifnull(m.nome ,"")  nome_medico 
+			FROM 
 					BD_ClinicaAbrao.comercial c
 				Left Join BD_ClinicaAbrao.procedimentos pr
 					ON( pr.id = c.id_procedimento)

@@ -32,7 +32,7 @@ func (s *storeImpl) GetAll(ctx context.Context) (*[]model.Procedimento, error) {
 	procedimentos := new([]model.Procedimento)
 	query := `
 				SELECT 
-					pr.id, pr.id_paciente, pa.nome nome_paciente, pr.id_medico, m.nome nome_medico, pr.desc_procedimento, pr.procedimento, pr.local_procedimento, pr.status, pr.data, pr.valor, pr.esteira 
+					pr.id, pr.id_paciente, ifnull(pa.nome ,"") nome_paciente, pr.id_medico, ifnull(m.nome ,"")  nome_medico , pr.desc_procedimento, pr.procedimento, pr.local_procedimento, pr.status, pr.data, pr.valor, pr.esteira 
 				FROM 
 					BD_ClinicaAbrao.procedimentos pr
 				Left Join BD_ClinicaAbrao.pacientes pa
@@ -52,7 +52,7 @@ func (s *storeImpl) GetAll(ctx context.Context) (*[]model.Procedimento, error) {
 func (s *storeImpl) GetById(ctx context.Context, id string) (*model.Procedimento, error) {
 	procedimento := new(model.Procedimento)
 	query := `	SELECT
-					pr.id, pr.id_paciente, pa.nome nome_paciente, pr.id_medico, m.nome nome_medico, pr.desc_procedimento, pr.procedimento, pr.local_procedimento, pr.status, pr.data, pr.valor, pr.esteira 
+					pr.id, pr.id_paciente, ifnull(pa.nome ,"") nome_paciente, pr.id_medico, ifnull(m.nome ,"")  nome_medico , pr.desc_procedimento, pr.procedimento, pr.local_procedimento, pr.status, pr.data, pr.valor, pr.esteira 
 				FROM 
 					BD_ClinicaAbrao.procedimentos pr
 				Left Join BD_ClinicaAbrao.pacientes pa
@@ -75,7 +75,7 @@ func (s *storeImpl) GetByAnything(ctx context.Context, procedimento *model.Proce
 	procedimentos := new([]model.Procedimento)
 	query := `
 		SELECT 
-			pr.id, pr.id_paciente, pa.nome nome_paciente, pr.id_medico, m.nome nome_medico, pr.desc_procedimento, pr.procedimento, pr.local_procedimento, pr.status, pr.data, pr.valor, pr.esteira 
+			pr.id, pr.id_paciente, ifnull(pa.nome ,"") nome_paciente, pr.id_medico, ifnull(m.nome ,"")  nome_medico , pr.desc_procedimento, pr.procedimento, pr.local_procedimento, pr.status, pr.data, pr.valor, pr.esteira 
 		FROM 
 			BD_ClinicaAbrao.procedimentos pr, BD_ClinicaAbrao.pacientes pa, BD_ClinicaAbrao.medicos m
 		Where 
