@@ -17,6 +17,7 @@ func Register(g *echo.Group, apps *app.Container, m *middleware.Middleware) {
 
 	g.GET("", h.getAllComercial, m.Auth.Public)
 	g.GET("/:comercial_id", h.getComercialById, m.Auth.Public)
+	g.GET("/byProcedimento/:procedimento_id", h.getComercialByIdProcedimento, m.Auth.Public)
 	g.POST("/anything", h.getComercialByAnything, m.Auth.Public)
 	g.POST("", h.setComercial, m.Auth.Public)
 	g.PUT("", h.updateComercial, m.Auth.Public)
@@ -49,6 +50,24 @@ func (h handler) getComercialById(c echo.Context) error {
 	id := c.Param("comercial_id")
 
 	response, err := h.apps.Comercial.GetById(ctx, id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, model.Response{
+			Data: nil,
+			Err:  err,
+		})
+	}
+
+	return c.JSON(http.StatusOK, model.Response{
+		Data: response,
+	})
+
+}
+
+func (h handler) getComercialByIdProcedimento(c echo.Context) error {
+	ctx := c.Request().Context()
+	id := c.Param("procedimento_id")
+
+	response, err := h.apps.Comercial.GetByIdProcedimento(ctx, id)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, model.Response{
 			Data: nil,

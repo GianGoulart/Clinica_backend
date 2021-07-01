@@ -17,6 +17,7 @@ func Register(g *echo.Group, apps *app.Container, m *middleware.Middleware) {
 
 	g.GET("", h.getAllAcompanhamento, m.Auth.Public)
 	g.GET("/:acompanhamento_id", h.getAcompanhamentoById, m.Auth.Public)
+	g.GET("/byProcedimento/:procedimento_id", h.getAcompanhamentoByIdProcedimento, m.Auth.Public)
 	g.POST("/anything", h.getAcompanhamentoByAnything, m.Auth.Public)
 	g.POST("", h.setAcompanhamento, m.Auth.Public)
 	g.PUT("", h.updateAcompanhamento, m.Auth.Public)
@@ -49,6 +50,24 @@ func (h handler) getAcompanhamentoById(c echo.Context) error {
 	id := c.Param("acompanhamento_id")
 
 	response, err := h.apps.Acompanhamento.GetById(ctx, id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, model.Response{
+			Data: nil,
+			Err:  err,
+		})
+	}
+
+	return c.JSON(http.StatusOK, model.Response{
+		Data: response,
+	})
+
+}
+
+func (h handler) getAcompanhamentoByIdProcedimento(c echo.Context) error {
+	ctx := c.Request().Context()
+	id := c.Param("procedimento_id")
+
+	response, err := h.apps.Acompanhamento.GetByIdProcedimento(ctx, id)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, model.Response{
 			Data: nil,

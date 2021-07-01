@@ -12,6 +12,7 @@ import (
 type App interface {
 	GetAll(ctx context.Context) (*[]model.Acompanhamento, error)
 	GetById(ctx context.Context, id string) (*model.Acompanhamento, error)
+	GetByIdProcedimento(ctx context.Context, id string) (*model.Acompanhamento, error)
 	GetByAnything(ctx context.Context, acompanhamento *model.Acompanhamento) (*[]model.Acompanhamento, error)
 	Set(ctx context.Context, acompanhamento *model.Acompanhamento) (*model.Acompanhamento, error)
 	Update(ctx context.Context, acompanhamento *model.Acompanhamento) (*model.Acompanhamento, error)
@@ -54,6 +55,24 @@ func (s appImpl) GetAll(ctx context.Context) (*[]model.Acompanhamento, error) {
 
 func (s appImpl) GetById(ctx context.Context, id string) (*model.Acompanhamento, error) {
 	res, err := s.store.Acompanhamento.GetById(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	res = res.PreencheAcompanhamento(res)
+
+	procedimento, err := s.store.Procedimento.GetById(ctx, res.Id_Procedimento)
+	if err != nil {
+		return nil, err
+	}
+	procedimento = procedimento.PreencheProcedimentos(procedimento)
+
+	res.Desc_Procedimento = fmt.Sprintf("%s - %s - %s - %v", procedimento.Nome_Paciente, procedimento.Nome_Medico, procedimento.NomeProcedimento, time.Unix(procedimento.Data, 0).Format("02-01-2006"))
+
+	return res, nil
+}
+
+func (s appImpl) GetByIdProcedimento(ctx context.Context, id string) (*model.Acompanhamento, error) {
+	res, err := s.store.Acompanhamento.GetByIdProcedimento(ctx, id)
 	if err != nil {
 		return nil, err
 	}

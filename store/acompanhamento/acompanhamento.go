@@ -15,6 +15,7 @@ import (
 type Store interface {
 	GetAll(ctx context.Context) (*[]model.Acompanhamento, error)
 	GetById(ctx context.Context, id string) (*model.Acompanhamento, error)
+	GetByIdProcedimento(ctx context.Context, id string) (*model.Acompanhamento, error)
 	GetByAnything(ctx context.Context, acompanhamento *model.Acompanhamento) (*[]model.Acompanhamento, error)
 	Set(ctx context.Context, acompanhamento *model.Acompanhamento) (*model.Acompanhamento, error)
 	Update(ctx context.Context, acompanhamento *model.Acompanhamento) (*model.Acompanhamento, error)
@@ -61,6 +62,26 @@ func (s *storeImpl) GetById(ctx context.Context, id string) (*model.Acompanhamen
 	err := s.db.GetContext(ctx, acompanhamento, query, id)
 	if err != nil && err != sql.ErrNoRows {
 		log.WithContext(ctx).Error("store.acompanhamento.get_acompanhamento_by_id ", err.Error())
+		return nil, err
+	}
+
+	return acompanhamento, nil
+}
+
+func (s *storeImpl) GetByIdProcedimento(ctx context.Context, id string) (*model.Acompanhamento, error) {
+	acompanhamento := new(model.Acompanhamento)
+	query := `
+				SELECT 
+					a.id, a.id_procedimento, envio_protocolo, solicitacao_previa, confirmacao_solicitacao, finalizacao_previa, status_previa, envio_convenio, liberacao, repasse_paciente, repasse_clinica, status_reembolso, obs 
+				FROM 
+					BD_ClinicaAbrao.acompanhamentos a 
+				Left Join BD_ClinicaAbrao.procedimentos pr
+				ON( pr.id = a.id_procedimento)
+				Where a.id_procedimento = ?`
+
+	err := s.db.GetContext(ctx, acompanhamento, query, id)
+	if err != nil && err != sql.ErrNoRows {
+		log.WithContext(ctx).Error("store.acompanhamento.get_acompanhamento_by_procedimento ", err.Error())
 		return nil, err
 	}
 

@@ -112,7 +112,11 @@ func (s appImpl) GetDash(ctx context.Context) (*[]model.Dashboard, error) {
 		} else if p.Esteira == 0 {
 			d.StatusFinanceiro = "Procedimento Realizado sem Esteira definida"
 		} else if p.Valor != mapComercialValor[p.Id] {
-			d.StatusFinanceiro = "Valor do procedimento não bate com valores lançados no Financeiro"
+			if _, ok := mapComercialValor[p.Id]; !ok {
+				d.StatusFinanceiro = "SEM valores lançados no Financeiro"
+			} else {
+				d.StatusFinanceiro = "Valor do procedimento não bate com valores lançados no Financeiro"
+			}
 		} else if p.Esteira == 1 && (mapComercial[p.Id].Tipo_Pagamento == 2 || mapComercial[p.Id].Tipo_Pagamento == 3 && mapComercialValor[p.Id] > 0) {
 			d.StatusFinanceiro = "Convenio COM valores Extra ou Particular no Financeiro"
 		} else if p.Esteira == 2 && (mapComercial[p.Id].Tipo_Pagamento == 1 || mapComercial[p.Id].Tipo_Pagamento == 2 && mapComercialValor[p.Id] > 0) {

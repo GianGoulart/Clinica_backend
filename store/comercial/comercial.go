@@ -18,6 +18,7 @@ type Store interface {
 	Set(ctx context.Context, comercial *model.Comercial) (*model.Comercial, error)
 	Update(ctx context.Context, comercial *model.Comercial) (*model.Comercial, error)
 	Delete(ctx context.Context, id string) error
+	GetByIdProcedimento(ctx context.Context, id string) (*model.Comercial, error)
 }
 
 func NewStore(db *sqlx.DB) Store {
@@ -59,6 +60,29 @@ func (s *storeImpl) GetById(ctx context.Context, id string) (*model.Comercial, e
 					BD_ClinicaAbrao.comercial 
 				Where 
 					id = ? `
+
+	err := s.db.GetContext(ctx, comercial, query, id)
+	if err != nil && err != sql.ErrNoRows {
+		log.WithContext(ctx).Error("store.comercial.get_comercial_by_id ", err.Error())
+		return nil, err
+	}
+
+	return comercial, nil
+}
+
+func (s *storeImpl) GetByIdProcedimento(ctx context.Context, id string) (*model.Comercial, error) {
+	comercial := new(model.Comercial)
+	query := `SELECT 
+					c.*, ifnull(pa.nome ,"") nome_paciente,	ifnull(m.nome ,"")  nome_medico
+				FROM 
+					BD_ClinicaAbrao.comercial c
+				Left Join BD_ClinicaAbrao.procedimentos pr
+				ON( pr.id = c.id_procedimento)
+				Left Join BD_ClinicaAbrao.pacientes pa
+				ON( pr.id_paciente = pa.id)
+				Left Join BD_ClinicaAbrao.medicos m
+				On(pr.id_medico = m.id)
+				Where c.id_procedimento = ? `
 
 	err := s.db.GetContext(ctx, comercial, query, id)
 	if err != nil && err != sql.ErrNoRows {
