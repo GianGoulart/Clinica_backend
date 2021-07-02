@@ -98,7 +98,7 @@ func (s *storeImpl) GetByAnything(ctx context.Context, paciente *model.Paciente)
 
 func (s *storeImpl) Set(ctx context.Context, paciente *model.Paciente) (*model.Paciente, error) {
 
-	_, err := s.db.ExecContext(ctx, `INSERT INTO BD_ClinicaAbrao.pacientes (id, cpf, nome, telefone, telefone2, convenio, plano, acomodacao, status) VALUES (?,?,?,?,?,?,?,?)`,
+	_, err := s.db.ExecContext(ctx, `INSERT INTO BD_ClinicaAbrao.pacientes (id, cpf, nome, telefone, telefone2, convenio, plano, acomodacao, status) VALUES (?,?,?,?,?,?,?,?,?)`,
 		paciente.Id, paciente.Cpf, paciente.Nome, paciente.Telefone, paciente.Telefone2, paciente.Convenio, paciente.Plano, paciente.Acomodacao, paciente.Status)
 	if err != nil {
 		log.WithContext(ctx).Error("store.paciente.set_paciente", err.Error())

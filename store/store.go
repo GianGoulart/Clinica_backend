@@ -8,6 +8,7 @@ import (
 	"github.com/GianGoulart/Clinica_backend/store/medicos"
 	"github.com/GianGoulart/Clinica_backend/store/pacientes"
 	"github.com/GianGoulart/Clinica_backend/store/procedimentos"
+	"github.com/GianGoulart/Clinica_backend/store/user"
 	"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
 )
@@ -21,6 +22,7 @@ type Container struct {
 	Procedimento   procedimentos.Store
 	Comercial      comercial.Store
 	Acompanhamento acompanhamento.Store
+	User           user.Store
 }
 
 // Options struct de opções para a criação de uma instancia dos repositórios
@@ -39,6 +41,7 @@ func New(opts Options) *Container {
 		Procedimento:   procedimentos.NewStore(opts.Writer),
 		Comercial:      comercial.NewStore(opts.Writer),
 		Acompanhamento: acompanhamento.NewStore(opts.Writer),
+		User:           user.NewStore(opts.Writer),
 	}
 
 	logrus.Info("Registered -> Store")

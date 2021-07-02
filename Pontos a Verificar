@@ -1,6 +1,7 @@
 Pontos a Verificar
 
 - If (STATUS_PROCEDIMENTO == "A AGENDAR" && Data Procedimento - HOJE() <= 10 && Data Procedimento <> "") = "Aviso: Faltam "&T264-HOJE()&" dias para o procedimento e ainda consta como A Agendar";
+- Data Contato
 
 OK      - Solução para Componente de Moeda 
 
@@ -21,33 +22,3 @@ OK      - Nome Especialidade (remover demais campos)
 OK      - Quebrar campo procedimento em colunas (Data Paciente Procedimento Medico Principal)
 
 OK      - telefone adicional
-
-
-
-if (p.Status == 1 || p.Status == 2) && p.Data > 0 && p.Data < todayTime.Unix() {
-	d.StatusFinanceiro = "Erro: Data de procedimento JÁ PASSOU, porém ainda consta como Agendado ou A Agendar"
-} else if p.Status != 3 && mapComercialValor[p.Id] > 0 {
-	d.StatusFinanceiro = "OK"
-} else if p.Status != 3 && mapComercialValor[p.Id] > 0 {
-	d.StatusFinanceiro = "Erro: Produção NÃO REALIZADA, porém constam valores no Financeiro"
-} else if p.Esteira == 0 {
-	d.StatusFinanceiro = "Erro: Procedimento Realizado sem Esteira definida"
-} else if p.Valor != mapComercialValor[p.Id] {
-	d.StatusFinanceiro = "Erro: Valor total do procedimento não bate com valores lançados no Financeiro"
-} else if p.Esteira == 1 && (mapComercial[p.Id].Tipo_Pagamento == 2 || mapComercial[p.Id].Tipo_Pagamento == 3 && mapComercialValor[p.Id] > 0) {
-	d.StatusFinanceiro = "Erro: 100% Convenio COM valores Extra ou Particular no Financeiro"
-} else if p.Esteira == 2 && (mapComercial[p.Id].Tipo_Pagamento == 1 || mapComercial[p.Id].Tipo_Pagamento == 2 && mapComercialValor[p.Id] > 0) {
-	d.StatusFinanceiro = "Erro: 100% Particular COM valores Extra ou Reembolso no Financeiro"
-} else if p.Esteira == 3 && (mapComercial[p.Id].Tipo_Pagamento == 1 && mapComercialValor[p.Id] == 0) {
-	d.StatusFinanceiro = "Erro: Convenio+Extra SEM valores de Reembolso no Financeiro"
-} else if p.Esteira == 3 && (mapComercial[p.Id].Tipo_Pagamento == 2 && mapComercialValor[p.Id] == 0) {
-	d.StatusFinanceiro = "Erro: Convenio+Extra SEM valores de Extra no Financeiro"
-} else if p.Esteira == 3 && (mapComercial[p.Id].Tipo_Pagamento == 3 && mapComercialValor[p.Id] > 0) {
-	d.StatusFinanceiro = "Erro: Convenio+Extra COM valores de Particular no Financeiro"
-} else if (mapComercial[p.Id].Data_Emissao_NF == 0 && mapComercial[p.Id].Tipo_Pagamento == 1 && mapComercialValor[p.Id] > 0) ||
-	(mapComercial[p.Id].Data_Emissao_NF == 0 && mapComercial[p.Id].Tipo_Pagamento == 2 && mapComercialValor[p.Id] > 0) ||
-	(mapComercial[p.Id].Data_Emissao_NF == 0 && mapComercial[p.Id].Tipo_Pagamento == 3 && mapComercialValor[p.Id] > 0) {
-	d.StatusFinanceiro = "Aviso: Existem NFs pendentes de Emissão"
-} else {
-	d.StatusFinanceiro = "OK"
-}

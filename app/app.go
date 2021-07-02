@@ -12,6 +12,7 @@ import (
 	"github.com/GianGoulart/Clinica_backend/app/pacientes"
 	"github.com/GianGoulart/Clinica_backend/app/procedimentos"
 	"github.com/GianGoulart/Clinica_backend/app/session"
+	"github.com/GianGoulart/Clinica_backend/app/user"
 	"github.com/GianGoulart/Clinica_backend/store"
 	"github.com/sirupsen/logrus"
 )
@@ -27,6 +28,7 @@ type Container struct {
 	Comercial      comercial.App
 	Acompanhamento acompanhamento.App
 	Dashboard      dashboard.App
+	User           user.App
 }
 
 // Options struct de opções para a criação de uma instancia dos serviços
@@ -50,6 +52,7 @@ func New(opts Options) *Container {
 		Comercial:      comercial.NewApp(opts.Stores),
 		Acompanhamento: acompanhamento.NewApp(opts.Stores),
 		Dashboard:      dashboard.NewApp(opts.Stores),
+		User:           user.NewApp(opts.Stores),
 	}
 
 	logrus.Info("Registered -> App")

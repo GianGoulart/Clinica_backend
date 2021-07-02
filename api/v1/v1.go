@@ -10,6 +10,7 @@ import (
 	"github.com/GianGoulart/Clinica_backend/api/v1/medicos"
 	"github.com/GianGoulart/Clinica_backend/api/v1/pacientes"
 	"github.com/GianGoulart/Clinica_backend/api/v1/procedimentos"
+	"github.com/GianGoulart/Clinica_backend/api/v1/user"
 	"github.com/GianGoulart/Clinica_backend/app"
 	"github.com/labstack/echo/v4"
 )
@@ -26,4 +27,5 @@ func Register(g *echo.Group, apps *app.Container, middleware *middleware.Middlew
 	comercial.Register(v1.Group("/comercial"), apps, middleware)
 	acompanhamento.Register(v1.Group("/acompanhamentos"), apps, middleware)
 	dashboard.Register(v1.Group("/dashboard"), apps, middleware)
+	user.Register(v1.Group("/user"), apps, middleware)
 }
