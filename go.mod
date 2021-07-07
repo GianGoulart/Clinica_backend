@@ -22,7 +22,7 @@ require (
 	github.com/swaggo/echo-swagger v1.0.0
 	github.com/swaggo/swag v1.6.7
 	github.com/xtgo/uuid v0.0.0-20140804021211-a0b114877d4c
-	golang.org/x/crypto v0.0.0-20210616213533-5ff15b29337e // indirect
+	golang.org/x/crypto v0.0.0-20210616213533-5ff15b29337e
 	golang.org/x/tools v0.1.0 // indirect
 	google.golang.org/grpc/examples v0.0.0-20210630181457-52546c5d89b7 // indirect
 )

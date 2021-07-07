@@ -32,22 +32,21 @@ func (s *storeImpl) GetUser(ctx context.Context, user *model.User) (*model.User,
 				FROM 
 					BD_ClinicaAbrao.users u
 				Where 
-					u.nome = ? 
-				And u.senha = ?`
+					u.nome = ?`
 
-	err := s.db.GetContext(ctx, res, query, user.Nome, user.Senha)
+	err := s.db.GetContext(ctx, res, query, user.Nome)
 	if err != nil && err != sql.ErrNoRows {
 		log.WithContext(ctx).Error("store.user.get_user ", err.Error())
 		return nil, err
 	}
 
-	return user, nil
+	return res, nil
 }
 
 func (s *storeImpl) Set(ctx context.Context, user *model.User) (*model.User, error) {
 
 	_, err := s.db.ExecContext(ctx, `INSERT INTO BD_ClinicaAbrao.users (id, nome, senha, roles, email) VALUES (?,?,?,?,?)`,
-		user.Id, user.Nome, user.Senha, user.Email)
+		user.Id, user.Nome, user.Senha, user.Roles, user.Email)
 	if err != nil {
 		log.WithContext(ctx).Error("store.user.set", err.Error())
 		return nil, err

@@ -6,6 +6,7 @@ import (
 	"github.com/GianGoulart/Clinica_backend/model"
 	"github.com/GianGoulart/Clinica_backend/store"
 	"github.com/GianGoulart/Clinica_backend/store/user"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type App interface {
@@ -30,6 +31,13 @@ func (s appImpl) GetUser(ctx context.Context, user *model.User) (*model.User, er
 		return nil, err
 	}
 
+	plainPassword := []byte(user.Senha)
+	// Assumes that u.Password is the actual hash and that you didn't store plain text password.
+	err = bcrypt.CompareHashAndPassword([]byte(res.Senha), plainPassword)
+	if err != nil {
+		return nil, err
+	}
+
 	return res, nil
 }
 
@@ -40,6 +48,12 @@ func (s appImpl) Set(ctx context.Context, user *model.User) (*model.User, error)
 		return nil, err
 
 	}
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Senha), bcrypt.DefaultCost)
+	if err != nil {
+		return nil, err
+	}
+	user.Senha = string(hashedPassword)
+
 	res, err := s.store.Set(ctx, user)
 	if err != nil {
 		return nil, err
