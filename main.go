@@ -34,16 +34,16 @@ func main() {
 	model.Watch(func(c model.Config, quit chan bool) {
 		e := echo.New()
 		e.Validator = model.New()
-		e.Debug = c.GetString("tc") != "prod"
 		e.HideBanner = true
 		e.Use(emiddleware.CORSWithConfig(emiddleware.CORSConfig{
-			AllowOrigins: []string{"*"},
-			AllowMethods: []string{"GET,POST,PUT,DELETE,OPTIONS"},
-			AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization, echo.HeaderXRequestedWith},
+			AllowOrigins:     []string{"*"},
+			AllowMethods:     []string{"*"},
+			AllowHeaders:     []string{"*"},
+			AllowCredentials: true,
 		}))
 
 		e.Use(emiddleware.Logger())
-		e.Use(emiddleware.BodyLimit("2M"))
+		e.Use(emiddleware.BodyLimit("10M"))
 		e.Use(emiddleware.Recover())
 		e.Use(emiddleware.RequestID())
 
