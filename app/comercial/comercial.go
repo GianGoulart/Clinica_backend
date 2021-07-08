@@ -134,6 +134,7 @@ func (s appImpl) GetByAnything(ctx context.Context, comercial *model.Comercial) 
 
 func (s appImpl) Set(ctx context.Context, comercial *model.Comercial) (*model.Comercial, error) {
 	comercial.Id = model.NewId()
+	comercial.Valor_Liquido = (comercial.Valor_Parcelas * float64(comercial.Qtd_Parcelas)) - comercial.Valor_Ajuste
 
 	res, err := s.store.Comercial.Set(ctx, comercial)
 	if err != nil {
@@ -143,6 +144,7 @@ func (s appImpl) Set(ctx context.Context, comercial *model.Comercial) (*model.Co
 }
 
 func (s appImpl) Update(ctx context.Context, comercial *model.Comercial) (*model.Comercial, error) {
+	comercial.Valor_Liquido = (comercial.Valor_Parcelas * float64(comercial.Qtd_Parcelas)) - comercial.Valor_Ajuste
 
 	res, err := s.store.Comercial.Update(ctx, comercial)
 	if err != nil {
