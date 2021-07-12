@@ -98,15 +98,6 @@ func main() {
 			}
 		}
 
-		// função para fechar as conexões
-		go func() {
-			<-quit
-
-			db.Close()
-			// dbWriter.Close()
-			e.Close()
-		}()
-
 		go e.Start(port)
 
 		logrus.Info("Microservice started!")
