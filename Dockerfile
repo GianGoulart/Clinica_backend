@@ -1,8 +1,9 @@
 FROM gcr.io/distroless/base-debian10
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY server .
+COPY ./config.json .
 
 # Run executable
-CMD ["/usr/src/app/server"]
+CMD ["/app/server"]
