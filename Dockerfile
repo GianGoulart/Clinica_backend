@@ -1,16 +1,10 @@
-FROM golang:1.15-alpine
+FROM gcr.io/distroless/base-debian10
 
-ENV GO111MODULE=on
-
-WORKDIR /app
-
-COPY ./go.mod .
-
-RUN go mod download
-
-COPY . .
+WORKDIR /usr/src/app
 
 EXPOSE 5055
 
+COPY server .
+
 # Run executable
-CMD ["go", "run", "main.go"]
+CMD ["/usr/src/app/server"]
