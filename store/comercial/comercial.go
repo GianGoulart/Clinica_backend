@@ -82,7 +82,8 @@ func (s *storeImpl) GetByIdProcedimento(ctx context.Context, id string) (*model.
 				ON( pr.id_paciente = pa.id)
 				Left Join BD_ClinicaAbrao.medicos m
 				On(pr.id_medico = m.id)
-				Where c.id_procedimento = ? `
+				Where c.id_procedimento = ? 
+				Order by c.data_procedimento desc`
 
 	err := s.db.GetContext(ctx, comercial, query, id)
 	if err != nil && err != sql.ErrNoRows {

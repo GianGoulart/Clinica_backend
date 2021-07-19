@@ -32,7 +32,8 @@ func (s *storeImpl) GetAll(ctx context.Context) (*[]model.Medico, error) {
 	query := `
 			Select id, nome, especialidade
 				From 
-					BD_ClinicaAbrao.medicos`
+					BD_ClinicaAbrao.medicos
+				Order by nome`
 
 	err := s.db.SelectContext(ctx, medicos, query)
 	if err != nil && err != sql.ErrNoRows {
@@ -50,7 +51,8 @@ func (s *storeImpl) GetById(ctx context.Context, id string) (*model.Medico, erro
 				From 
 					BD_ClinicaAbrao.medicos 
 				Where 
-					id = ? `
+					id = ? 
+				Order by nome`
 
 	err := s.db.GetContext(ctx, medico, query, id)
 	if err != nil && err != sql.ErrNoRows {
