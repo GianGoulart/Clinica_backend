@@ -10,7 +10,7 @@ import (
 type App interface {
 	GetAll(ctx context.Context) (*[]model.Comercial, error)
 	GetById(ctx context.Context, id string) (*model.Comercial, error)
-	GetByIdProcedimento(ctx context.Context, id string) (*model.Comercial, error)
+	GetByIdProcedimento(ctx context.Context, id string) (*[]model.Comercial, error)
 	GetByAnything(ctx context.Context, comercial *model.Comercial) (*[]model.Comercial, error)
 	Set(ctx context.Context, comercial *model.Comercial) (*model.Comercial, error)
 	Update(ctx context.Context, comercial *model.Comercial) (*model.Comercial, error)
@@ -80,27 +80,33 @@ func (s appImpl) GetById(ctx context.Context, id string) (*model.Comercial, erro
 	return res, nil
 }
 
-func (s appImpl) GetByIdProcedimento(ctx context.Context, id string) (*model.Comercial, error) {
-	res, err := s.store.Comercial.GetByIdProcedimento(ctx, id)
+func (s appImpl) GetByIdProcedimento(ctx context.Context, id string) (*[]model.Comercial, error) {
+	var comercials = []model.Comercial{}
+	response, err := s.store.Comercial.GetByIdProcedimento(ctx, id)
 	if err != nil {
 		return nil, err
 	}
-	res = res.PreencheComercial(res)
-	medico_part, err := s.store.Medico.GetById(ctx, res.Id_Medico_Part)
-	if err != nil {
-		return nil, err
+
+	for _, res := range *response {
+
+		r := res.PreencheComercial(&res)
+		medico_part, err := s.store.Medico.GetById(ctx, res.Id_Medico_Part)
+		if err != nil {
+			return nil, err
+		}
+		r.Nome_Medico_Part = medico_part.Nome
+
+		procedimento, err := s.store.Procedimento.GetById(ctx, r.Id_Procedimento)
+		if err != nil {
+			return nil, err
+		}
+		procedimento = procedimento.PreencheProcedimentos(procedimento)
+
+		r.Procedimento = *procedimento
+		comercials = append(comercials, *r)
 	}
-	res.Nome_Medico_Part = medico_part.Nome
-
-	procedimento, err := s.store.Procedimento.GetById(ctx, res.Id_Procedimento)
-	if err != nil {
-		return nil, err
-	}
-	procedimento = procedimento.PreencheProcedimentos(procedimento)
-
-	res.Procedimento = *procedimento
-
-	return res, nil
+	response = &comercials
+	return response, nil
 }
 
 func (s appImpl) GetByAnything(ctx context.Context, comercial *model.Comercial) (*[]model.Comercial, error) {
