@@ -50,7 +50,7 @@ func (s appImpl) GetDash(ctx context.Context) (*[]model.Dashboard, error) {
 	for _, v := range *comercial {
 		mapComercial[v.Id_Procedimento] = v
 
-		mapComercialValor[v.Id_Procedimento] += v.Valor_Parcelas
+		mapComercialValor[v.Id_Procedimento] += (v.Valor_Parcelas * float64(v.Qtd_Parcelas))
 	}
 
 	procedimentos, err := s.store.Procedimento.GetAll(ctx)
